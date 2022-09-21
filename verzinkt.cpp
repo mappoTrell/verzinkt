@@ -37,10 +37,6 @@ verzinkt::verzinkt(QWidget *parent)
 
     scene->update();
 
-
-
-
-
     ui->graphicsView->setDragMode(QGraphicsView::ScrollHandDrag);
 
 
