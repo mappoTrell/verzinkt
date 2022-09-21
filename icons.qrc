@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>Icons/draw-eraser.svg</file>
+        <file>Icons/edit-delete.svg</file>
+        <file>Icons/custom-folder-download.svg</file>
+    </qresource>
+</RCC>
