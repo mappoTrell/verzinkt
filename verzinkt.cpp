@@ -26,6 +26,10 @@ verzinkt::verzinkt(QWidget *parent)
 
 
 
+
+
+
+
     ui->graphicsView->fitInView(map,Qt::KeepAspectRatio);
 
     int factor = 10;
