@@ -10,7 +10,6 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    qhtml5file_html5.cpp \
     verzinkt.cpp
 
 HEADERS += \
