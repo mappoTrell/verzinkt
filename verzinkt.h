@@ -15,6 +15,8 @@
 #include <QFile>
 #include <QFileDialog>
 #include <QBuffer>
+#include <QInputDialog>
+
 
 
 
