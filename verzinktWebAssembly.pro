@@ -14,7 +14,6 @@ SOURCES += \
     verzinkt.cpp
 
 HEADERS += \
-    qhtml5file.h \
     verzinkt.h
 
 FORMS += \
