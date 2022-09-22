@@ -2,13 +2,15 @@
 
 #include "ui_verzinkt.h"
 
-inline void initMyResource() { Q_INIT_RESOURCE(icons); }
+
 
 verzinkt::verzinkt(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::verzinkt)
 {
-    initMyResource();
+
+    Q_INIT_RESOURCE(icons);
+
     ui->setupUi(this);
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
@@ -25,12 +27,6 @@ verzinkt::verzinkt(QWidget *parent)
     map->setFlag(QGraphicsItem::ItemIsMovable);
 
     map->setFlag(QGraphicsItem::ItemIsSelectable);
-
-    map->setAcceptHoverEvents(1);
-
-
-
-
 
 
 
