@@ -300,21 +300,6 @@ void verzinkt::on_pushButtonTest_clicked()
 
 
 
-    auto img = maps.at(scene->selectedItems().at(0)->data(42).toInt())->pixmap().toImage();
-
-    QByteArray ba;
-    QBuffer buffer(&ba);
-    buffer.open(QIODevice::WriteOnly);
-    img.save(&buffer, "PNG");
-
-    QString test = "test.png";
-
-    ui->lineEdit->setText(QString::number(ba.size()));
-
-    QHtml5File::save(ba, test);
-
-
-
 }
 
 
