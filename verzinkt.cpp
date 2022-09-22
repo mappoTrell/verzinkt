@@ -338,7 +338,7 @@ void verzinkt::on_actionRemove_image_triggered()
 {
     if(scene->selectedItems().size()==0){
 
-        QMessageBox::warning(this, "Warning", "No image selected");
+        QMessageBox::warning(this, "                 Warning                 ", "No image selected");
         return;
 
     }
@@ -346,6 +346,7 @@ void verzinkt::on_actionRemove_image_triggered()
     QGraphicsItem *rem = scene->selectedItems().at(0);
 
     maps.removeAt(rem->data(42).toInt());
+
     scene->removeItem(rem);
     delete rem;
     rem = NULL;
@@ -359,7 +360,7 @@ void verzinkt::on_actionSave_selected_image_triggered()
 
     if(scene->selectedItems().size()==0){
 
-        QMessageBox::warning(this, "Warning                        ", warning);
+        QMessageBox::warning(this, "                  Warning                        ", warning);
         return;
 
     }
