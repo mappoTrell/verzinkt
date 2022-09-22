@@ -1,14 +1,20 @@
 #include "verzinkt.h"
-#include "qhtml5file.h"
+
 #include "ui_verzinkt.h"
+
+
 
 verzinkt::verzinkt(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::verzinkt)
 {
+
+    Q_INIT_RESOURCE(icons);
+
     ui->setupUi(this);
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
+
 
 
     ui->graphicsView->setTransformationAnchor(QGraphicsView::NoAnchor);
@@ -21,12 +27,6 @@ verzinkt::verzinkt(QWidget *parent)
     map->setFlag(QGraphicsItem::ItemIsMovable);
 
     map->setFlag(QGraphicsItem::ItemIsSelectable);
-
-    map->setAcceptHoverEvents(1);
-
-
-
-
 
 
 
@@ -308,11 +308,26 @@ void verzinkt::on_pushButtonTest_clicked()
     buffer.open(QIODevice::WriteOnly);
     img.save(&buffer, "PNG");
 
-    QString test = "test.png";
+
 
     ui->lineEdit->setText(QString::number(ba.size()));
 
-    QHtml5File::save(ba, test);
+    QString fName = "test.png";
+
+    QFileDialog::saveFileContent(ba, fName);
+
+    bool ok;
+        QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
+                                             tr("File name:"), QLineEdit::Normal,
+                                             QDir::home().dirName(), &ok);
+    if (ok && !text.isEmpty()){
+        fName = text;
+    }
+
+    ui->lineEdit->setText(fName);
+
+
+
 
 
 
@@ -340,9 +355,11 @@ void verzinkt::on_actionRemove_image_triggered()
 void verzinkt::on_actionSave_selected_image_triggered()
 {
 
+    QString warning = "No Image selected";
+
     if(scene->selectedItems().size()==0){
 
-        QMessageBox::warning(this, "Warning", "No image selected");
+        QMessageBox::warning(this, "Warning                        ", warning);
         return;
 
     }
