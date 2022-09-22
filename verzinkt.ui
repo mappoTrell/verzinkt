@@ -126,7 +126,7 @@
   <action name="actionSave_selected_image">
    <property name="icon">
     <iconset resource="icons.qrc">
-     <normaloff>:/save</normaloff>:/save</iconset>
+     <normaloff>:/save2</normaloff>:/save2</iconset>
    </property>
    <property name="text">
     <string>Save selected image</string>
