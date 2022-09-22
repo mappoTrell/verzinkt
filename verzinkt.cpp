@@ -1,5 +1,4 @@
 #include "verzinkt.h"
-#include "qhtml5file.h"
 #include "ui_verzinkt.h"
 
 verzinkt::verzinkt(QWidget *parent)
