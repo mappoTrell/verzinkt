@@ -375,20 +375,12 @@ void verzinkt::on_pushButtonCancel_clicked()
 void verzinkt::enableUi(bool act){
 
     ui->actionSave_selected_image->setEnabled(act);
-
     ui->actionRemove_image->setEnabled(act);
-
     ui->verticalLayout->setEnabled(act);
-
     ui->pushButtonAdd->setEnabled(act);
-
     ui->pushButtonRemove->setEnabled(act);
-
     ui->pushButtonGenerate->setEnabled(act);
-
     ui->tableView->setEnabled(act);
 
-
     return;
-
 }
