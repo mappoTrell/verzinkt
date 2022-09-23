@@ -34,6 +34,8 @@ class verzinkt : public QMainWindow
 public:
     verzinkt(QWidget *parent = nullptr);
 
+
+
     void wheelEvent(QWheelEvent* event);
     ~verzinkt();
 
@@ -76,7 +78,7 @@ private:
 
     int factor = 100;
 
-
+    void enableUi(bool act);
 
 public slots:
 

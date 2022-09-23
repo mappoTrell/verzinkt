@@ -15,7 +15,7 @@ verzinkt::verzinkt(QWidget *parent)
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
 
-
+    ui->qWidgetSaveFile->hide();
 
     ui->graphicsView->setTransformationAnchor(QGraphicsView::NoAnchor);
     ui->graphicsView->setResizeAnchor(QGraphicsView::NoAnchor);
@@ -299,38 +299,6 @@ void verzinkt::on_pushButtonGenerate_clicked()
 void verzinkt::on_pushButtonTest_clicked()
 {
 
-
-
-    auto img = maps.at(scene->selectedItems().at(0)->data(42).toInt())->pixmap().toImage();
-
-    QByteArray ba;
-    QBuffer buffer(&ba);
-    buffer.open(QIODevice::WriteOnly);
-    img.save(&buffer, "PNG");
-
-
-
-    ui->lineEdit->setText(QString::number(ba.size()));
-
-    QString fName = "test.png";
-
-    QFileDialog::saveFileContent(ba, fName);
-
-    bool ok;
-        QString text = QInputDialog::getText(this, tr("QInputDialog::getText()"),
-                                             tr("File name:"), QLineEdit::Normal,
-                                             QDir::home().dirName(), &ok);
-    if (ok && !text.isEmpty()){
-        fName = text;
-    }
-
-    ui->lineEdit->setText(fName);
-
-
-
-
-
-
 }
 
 
@@ -365,25 +333,9 @@ void verzinkt::on_actionSave_selected_image_triggered()
 
     }
 
-    QFileDialog::Options options;
-    QString selectedFilter;
+    ui->qWidgetSaveFile->show();
 
-    QString fileName = "";
-
-
-    fileName = QFileDialog::getSaveFileName(this, "Save image", ".", "PNG Files (*.png);;All Files (*)",
-                                        &selectedFilter,
-                                        options);
-
-    if(fileName.size()==0){
-
-        QMessageBox::warning(this, "Warning", "Cannot save file with no name");
-        return;
-
-    }
-
-
-    maps.at(scene->selectedItems().at(0)->data(42).toInt())->pixmap().toImage().save(fileName,"png", 100);
+    enableUi(false);
 
 
 }
@@ -391,12 +343,41 @@ void verzinkt::on_actionSave_selected_image_triggered()
 
 void verzinkt::on_pushButtonSave_clicked()
 {
+    auto img = maps.at(scene->selectedItems().at(0)->data(42).toInt())->pixmap().toImage();
 
+    QByteArray ba;
+    QBuffer buffer(&ba);
+    buffer.open(QIODevice::WriteOnly);
+    img.save(&buffer, "PNG");
+
+    QString fName = ui->lineEditFileName->text()+".png";
+
+    QFileDialog::saveFileContent(ba, fName);
+
+    ui->qWidgetSaveFile->hide();
+
+    ui->lineEditFileName->clear();
+
+    enableUi(true);
 }
 
 
 void verzinkt::on_pushButtonCancel_clicked()
 {
+    ui->qWidgetSaveFile->hide();
 
+    ui->lineEditFileName->clear();
+
+    enableUi(true);
 }
 
+
+void verzinkt::enableUi(bool act){
+
+    ui->actionSave_selected_image->setEnabled(act);
+
+    ui->actionRemove_image->setEnabled(act);
+
+    ui->verticalLayout->setEnabled(act);
+
+}
