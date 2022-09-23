@@ -380,4 +380,15 @@ void verzinkt::enableUi(bool act){
 
     ui->verticalLayout->setEnabled(act);
 
+    ui->pushButtonAdd->setEnabled(act);
+
+    ui->pushButtonRemove->setEnabled(act);
+
+    ui->pushButtonGenerate->setEnabled(act);
+
+    ui->tableView->setEnabled(act);
+
+
+    return;
+
 }
