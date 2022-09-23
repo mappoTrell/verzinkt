@@ -60,6 +60,9 @@ verzinkt::verzinkt(QWidget *parent)
     ui->tableView->setModel(model);
 
 
+    QRegExp rgx("[a-zA-Z]{1,50}\\d{1,50}");
+    QValidator *comValidator = new QRegExpValidator (rgx, this);
+    ui->lineEditFileName->setValidator(comValidator);
 
     // Generate data
 
@@ -351,6 +354,7 @@ void verzinkt::on_pushButtonSave_clicked()
     img.save(&buffer, "PNG");
 
     QString fName = ui->lineEditFileName->text()+".png";
+
 
     QFileDialog::saveFileContent(ba, fName);
 
