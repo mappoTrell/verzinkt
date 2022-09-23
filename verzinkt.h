@@ -52,6 +52,10 @@ private slots:
 
     void on_actionSave_selected_image_triggered();
 
+    void on_pushButtonSave_clicked();
+
+    void on_pushButtonCancel_clicked();
+
 private:
     Ui::verzinkt *ui;
 

@@ -388,3 +388,15 @@ void verzinkt::on_actionSave_selected_image_triggered()
 
 }
 
+
+void verzinkt::on_pushButtonSave_clicked()
+{
+
+}
+
+
+void verzinkt::on_pushButtonCancel_clicked()
+{
+
+}
+
