@@ -151,15 +151,15 @@ void verzinkt::on_pushButtonGenerate_clicked()
 
     int rows = model->rowCount();
 
-    if(rows == 0){
-        QMessageBox::warning(this, "Warning", "Cannot create image with 0 seeds");
-        return;
+//    if(rows == 0){
+//        QMessageBox::warning(this, "Warning", "Cannot create image with 0 seeds");
+//        return;
 
-    }
+//    }
 
 
 
-    int** keime = new int*[rows];
+    keime = new int*[rows];
     for(int row = 0; row < rows; row++)
         {
 
@@ -184,19 +184,19 @@ void verzinkt::on_pushButtonGenerate_clicked()
 
                 int number = str.toInt(&ok);
 
-                if(ok == false){
-                    //ui->lineEdit->setText(QString("false"));
+//                if(ok == false){
+//                    //ui->lineEdit->setText(QString("false"));
 
-                    for (int i = 0; i < rows; i++) {
-                        delete[] keime[i];
-                    }
-                    delete[] keime;
-                    keime = NULL;
+//                    for (int i = 0; i < rows; i++) {
+//                        delete[] keime[i];
+//                    }
+//                    delete[] keime;
+//                    keime = NULL;
 
-                    QMessageBox::warning(this, "Warning", "Some of the data in the table are no ints");
+//                    QMessageBox::warning(this, "Warning", "Some of the data in the table are no ints");
 
-                    return;
-                }
+//                    return;
+//                }
 
                 switch(col){
                 case 0:number %= width;break;
@@ -215,61 +215,70 @@ void verzinkt::on_pushButtonGenerate_clicked()
 
     image =  new QImage(width, height,  QImage::Format_Indexed8);
 
+    imageMa = new int**[width];
+    for(int w = 0; w < width; w++)
+    {
+
+        imageMa[w] = new int*[height];
+        for(int h = 0; h < height; h++){
+            imageMa[w][h] = new int[2];
+            imageMa[w][h][0] = 0;
+            imageMa[w][h][1] = -1;
+        }
+
+    }
 
 
+
+    QRgb value = qRgb(0, 0, 0);
+    image->setColor(0, value);
 
     for(int i = 0; i < rows; i++){
         std::srand(i+1);
         int rand = (std::rand() % 256);
         QRgb value = qRgb(rand, rand, rand);
-        image->setColor(i, value);
+        image->setColor(i+1, value);
 
     }
 
 
-    for(int w = 0; w < width; w++){
+    for(int i = 0; i < rows; i++){
+        imageMa[keime[i][0]][keime[i][1]][0] = i+1;
+        imageMa[keime[i][0]][keime[i][1]][1] = 0;
+    }
 
-        for(int h = 0; h < height; h++){
 
-            int k = 0;
-            int kR = -1;
 
-            for(int i = 0; i < rows; i++){
+    for(int rounds = 1; rounds <= 300;rounds++){
 
-                int dx = w - keime[i][0];
-                int dy = h - keime[i][1];
+        for(int w = 0; w < width; w++){
 
-                float rx, ry, r;
+            for(int h = 0; h < height; h++){
 
-                if(dx<0){
-                    dx *= -1;
-                    rx = float(dx)/float(keime[i][4]);
-                }else{
-                    rx = float(dx)/float(keime[i][2]);
-                }
+                QPoint pos = QPoint(w, h);
 
-                if(dy<0){
-                    dy *= -1;
-                    ry = float(dy)/float(keime[i][5]);
-                }else{
-                    ry = float(dy)/float(keime[i][3]);
-                }
 
-                if(rx<ry){
+                if(imageMa[pos.x()][pos.y()][0] >= 1 && imageMa[pos.x()][pos.y()][1] < rounds){
+                    checkPixel(pos, -1, -1, rounds);
+                    checkPixel(pos, 0, -1, rounds);
+                    checkPixel(pos, -1, 0, rounds);
+                    checkPixel(pos, 1, 1, rounds);
+                    checkPixel(pos, 1, 0, rounds);
+                    checkPixel(pos, 0, 1, rounds);
+                    checkPixel(pos, 1, -1, rounds);
+                    checkPixel(pos, -1, 1, rounds);
 
-                    r = ry + keime[i][6];
-                }else{
-                    r = rx + keime[i][6];
-                }
-
-                if((r <= kR) | (kR == -1)){
-                    k = i;
-                    kR = r;
                 }
 
             }
+        }
 
-            image->setPixel(w, h, k);
+    }
+
+    for(int w = 0; w < width; w++){
+
+        for(int h = 0; h < height; h++){
+            image->setPixel(w, h, imageMa[w][h][0]);
 
         }
 
@@ -286,13 +295,7 @@ void verzinkt::on_pushButtonGenerate_clicked()
     maps.back()->setFlag(QGraphicsItem::ItemIsMovable);
 
 
-    for (int i = 0; i < rows; i++) {
-        delete[] keime[i];
-    }
-    delete[] keime;
-    keime = NULL;
 
-    ui->lineEdit->setText(maps.back()->data(42).toString());
 
     ui->verticalLayout->setEnabled(true);
 
@@ -388,3 +391,62 @@ void verzinkt::enableUi(bool act){
 
     return;
 }
+
+void verzinkt::checkPixel(QPoint posN, int ox, int oy,int round)
+{
+
+
+    QPoint pos = posN;
+
+    posN += QPoint(ox, oy);
+
+
+
+    if(image->valid(posN)){
+        if(imageMa[posN.x()][posN.y()][0] == 0){
+
+            imageMa[posN.x()][posN.y()][0] = imageMa[pos.x()][pos.y()][0];
+            imageMa[posN.x()][posN.y()][1] = round;
+            return;
+        }
+
+        if(imageMa[posN.x()][posN.y()][0] != imageMa[pos.x()][pos.y()][0] && imageMa[posN.x()][posN.y()][1] != 0){
+            int keimOld = imageMa[posN.x()][posN.y()][0]-1;
+            QPoint cvOld = QPoint(posN.x()-keime[keimOld][0], posN.y()-keime[keimOld][1]);
+
+            int keimNew = imageMa[pos.x()][pos.y()][0]-1;
+            QPoint cvNew = QPoint(posN.x()-keime[keimNew][0], posN.y()-keime[keimNew][1]);
+
+            if(calcT(cvOld, keimOld) > calcT(cvNew, keimNew)){
+                imageMa[posN.x()][posN.y()][0] = imageMa[pos.x()][pos.y()][0];
+                imageMa[posN.x()][posN.y()][1] = round;
+            }
+         return;
+
+
+        }
+    }
+
+}
+
+float verzinkt::calcT(QPoint cvOld, int keimOld)
+{
+
+    float rx, ry;
+
+    if(cvOld.x()>0){
+        rx = float(cvOld.x()*(-1))/float(keime[keimOld][4]);
+    }else{
+        rx = float(cvOld.x())/float(keime[keimOld][2]);
+    }
+
+    if(cvOld.y()>0){
+        ry = float(cvOld.y()*(-1))/float(keime[keimOld][5]);
+    }else{
+        ry = float(cvOld.y())/float(keime[keimOld][3]);
+    }
+
+    return float(sqrt((rx*rx)+(ry*ry))+keime[keimOld][6]);
+
+}
+

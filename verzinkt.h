@@ -17,6 +17,7 @@
 #include <QBuffer>
 #include <QInputDialog>
 #include <QTextStream>
+#include <QDebug>
 
 
 
@@ -72,11 +73,19 @@ private:
     QStandardItemModel* model;
     QList<QString> horizontalHeader;
 
-    int width = 10000;
+    int width = 300;
 
-    int height = 10000;
+    int height = 300;
 
-    int factor = 100;
+    int factor = 10;
+
+    int** keime;
+
+    int*** imageMa;
+
+    void checkPixel(QPoint posN, int ox, int oy, int round);
+
+    float calcT(QPoint pos, int keimOld);
 
     void enableUi(bool act);
 
